@@ -2,42 +2,44 @@
 
 import { CATEGORIES, type Category } from "@/lib/opportunities"
 
+const SECTION_ANCHORS: Record<Category, string> = {
+  all: "#top",
+  events: "#hackathons",
+  grants: "#grants",
+  teamup: "#projects",
+}
+
 interface CategoryTabsProps {
   active: Category
-  counts: Record<Category, number>
   onChange: (category: Category) => void
 }
 
-export function CategoryTabs({ active, counts, onChange }: CategoryTabsProps) {
+export function CategoryTabs({ active, onChange }: CategoryTabsProps) {
   return (
-    <nav aria-label="Opportunity categories" className="-mx-1 overflow-x-auto pb-1">
-      <ul className="flex w-max min-w-full gap-2 px-1">
+    <nav aria-label="Opportunity categories" className="overflow-x-auto no-scrollbar pb-1 min-w-0">
+      <div className="inline-flex min-w-max gap-1 rounded-full bg-slate-900/60 border border-white/10 p-1.5 shadow-xl backdrop-blur-xl">
         {CATEGORIES.map((cat) => {
           const isActive = active === cat.id
           return (
-            <li key={cat.id}>
-              <button
-                onClick={() => onChange(cat.id)}
-                aria-pressed={isActive}
-                className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                  isActive
-                    ? "border-primary/40 bg-primary text-primary-foreground glow-emerald"
-                    : "border-border bg-card/50 text-muted-foreground hover:border-primary/30 hover:text-foreground"
-                }`}
-              >
-                {cat.label}
-                <span
-                  className={`rounded-full px-1.5 py-0.5 text-xs tabular-nums ${
-                    isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {counts[cat.id]}
-                </span>
-              </button>
-            </li>
+            <button
+              key={cat.id}
+              type="button"
+              onClick={(event) => {
+                event.preventDefault()
+                onChange(cat.id)
+              }}
+              aria-current={isActive ? "page" : undefined}
+              className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+                isActive
+                  ? "border-emerald-500/30 bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                  : "border-transparent text-slate-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {cat.label}
+            </button>
           )
         })}
-      </ul>
+      </div>
     </nav>
   )
 }

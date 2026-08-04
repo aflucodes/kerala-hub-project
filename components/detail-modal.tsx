@@ -17,6 +17,7 @@ const CTA: Record<
   info: { label: "Visit Grant Portal", icon: ArrowRight, note: "Applications are reviewed on a rolling basis." },
   contact: { label: "Send a Message", icon: Mail, note: "The project owner will reach out over email." },
   download: { label: "Download PDF", icon: Download, note: "Free · No sign-up required." },
+  whatsapp: { label: "Send WhatsApp Message", icon: Mail, note: "A pre-filled WhatsApp pitch will open in a new tab." },
 }
 
 export function DetailModal({ opportunity, onClose }: DetailModalProps) {
@@ -39,12 +40,6 @@ export function DetailModal({ opportunity, onClose }: DetailModalProps) {
               <dd className="mt-0.5 text-sm font-semibold text-foreground">{m.value}</dd>
             </div>
           ))}
-          {opportunity.location ? (
-            <div className="rounded-lg border border-border bg-background/40 p-3">
-              <dt className="text-[0.7rem] uppercase tracking-wide text-muted-foreground">Location</dt>
-              <dd className="mt-0.5 text-sm font-semibold text-foreground">{opportunity.location}</dd>
-            </div>
-          ) : null}
         </dl>
 
         <ul className="flex flex-col gap-2 rounded-lg border border-primary/20 bg-primary/5 p-4">

@@ -3,7 +3,6 @@ export type Category =
   | "events"
   | "grants"
   | "teamup"
-  | "resources"
 
 export type OpportunityType = "Event" | "Grant" | "Teamup" | "Resource"
 
@@ -14,76 +13,163 @@ export interface Opportunity {
   title: string
   description: string
   meta: { label: string; value: string }[]
-  primaryAction: "apply" | "info" | "contact" | "download"
-  location?: string
+  badges?: { label: string; value: string }[]
+  skillTags?: string[]
+  projectTag?: string
+  primaryAction: "apply" | "info" | "contact" | "download" | "whatsapp"
+  actionUrl?: string
 }
 
 export const CATEGORIES: { id: Category; label: string }[] = [
-  { id: "all", label: "All Opportunities" },
-  { id: "events", label: "Hackathons & Events" },
-  { id: "grants", label: "IEDC & KSUM Grants" },
-  { id: "teamup", label: "Campus Projects Looking for Teammates" },
-  { id: "resources", label: "Study Notes & Resources" },
+  { id: "all", label: "✨ All Hubs" },
+  { id: "events", label: "🏆 Hackathons & Events" },
+  { id: "grants", label: "💰 Innovation Grants" },
+  { id: "teamup", label: "🏛️ IEDC Talent & Gigs" },
 ]
+
+const createWhatsAppUrl = (title: string, skills: string[]) =>
+  `https://wa.me/?text=${encodeURIComponent(
+    `Hello, I am interested in ${title}. My name is [Your Name]. I have experience in ${skills.join(", ")}. Please let me know how I can contribute to this project.`,
+  )}`
 
 export const OPPORTUNITIES: Opportunity[] = [
   {
-    id: "ieee-hackathon-2026",
+    id: "ieee-kerala-campus-hackathon",
     type: "Event",
     category: "events",
-    title: "IEEE State Hackathon 2026",
+    title: "IEEE Kerala Student Sprints",
     description:
-      "A 36-hour flagship hackathon bringing together student innovators from across Kerala. Build solutions for smart campuses, agri-tech, and public services. Prizes worth ₹1.5 Lakh.",
+      "Explore campus-level innovation tracks for smart mobility, health, and public systems through IEEE Kerala student hackathons and mentorship.",
     meta: [
-      { label: "Location", value: "Kochi" },
-      { label: "Deadline", value: "Next Week" },
-      { label: "Team Size", value: "2–4" },
+      { label: "Track", value: "Deep-Tech / Mobility" },
+      { label: "Benefit", value: "Duty Leave + IEDC Mentorship" },
+      { label: "Access", value: "IEEE Kerala Portal" },
     ],
-    location: "Kochi",
     primaryAction: "apply",
+    actionUrl: "https://ieeekerala.org",
+  },
+  {
+    id: "ksum-campus-sprint",
+    type: "Event",
+    category: "events",
+    title: "KSUM Campus Hackathons",
+    description:
+      "Join Kerala Startup Mission campus events focused on deep-tech and sustainability challenges, with support from local IEDC chapters.",
+    meta: [
+      { label: "Track", value: "Deep-Tech / Sustainability" },
+      { label: "Benefit", value: "Startup Mentorship" },
+      { label: "Access", value: "Startup Mission Hub" },
+    ],
+    primaryAction: "apply",
+    actionUrl: "https://startupmission.kerala.gov.in",
   },
   {
     id: "ksum-idea-grant",
     type: "Grant",
     category: "grants",
-    title: "KSUM Idea Grant ₹2 Lakh",
+    title: "KSUM Student Idea Grant",
     description:
-      "Kerala Startup Mission's Idea Grant provides up to ₹2 Lakh in early-stage funding for student founders to build a prototype and validate their idea.",
+      "Equity-free funding up to ₹2,00,000 for Kerala student founders to build MVPs and early prototypes under the Startup Mission support ecosystem.",
     meta: [
-      { label: "Eligibility", value: "IEDC Students" },
+      { label: "Eligibility", value: "IEDC & KSUM Students" },
       { label: "Amount", value: "₹2,00,000" },
-      { label: "Mode", value: "Rolling" },
+      { label: "Support", value: "Mentoring + Pitch Review" },
     ],
     primaryAction: "info",
+    actionUrl: "https://startupmission.kerala.gov.in",
   },
   {
-    id: "campus-app-teamup",
+    id: "iedc-preseed-innovator-fund",
+    type: "Grant",
+    category: "grants",
+    title: "IEDC Pre-Seed Innovator Fund",
+    description:
+      "Campus teams can access up to ₹50,000 for prototype development, workshops, and project validation through their college IEDC cell.",
+    meta: [
+      { label: "Amount", value: "Up to ₹50,000" },
+      { label: "Eligibility", value: "College IEDC Teams" },
+      { label: "Duration", value: "Short-term support" },
+    ],
+    primaryAction: "info",
+    actionUrl: "https://startupmission.kerala.gov.in",
+  },
+  {
+    id: "kdisc-yip-grant",
+    type: "Grant",
+    category: "grants",
+    title: "K-DISC Young Innovators Programme Grant",
+    description:
+      "A student-focused grant stream through K-DISC supporting young innovators from Kerala with seed funding and mentor connections.",
+    meta: [
+      { label: "Amount", value: "₹30,000+" },
+      { label: "Eligibility", value: "Student Innovators" },
+      { label: "Application", value: "Open now" },
+    ],
+    primaryAction: "info",
+    actionUrl: "https://startupmission.kerala.gov.in",
+  },
+  {
+    id: "iedc-paid-ui-gig",
     type: "Teamup",
     category: "teamup",
-    title: "Looking for React & AI Dev for Campus App",
+    title: "Client Paid Gig: IEDC Chapter UI Builder",
     description:
-      "Building a campus attendance + events app for our college. Need a builder comfortable with React and basic AI/LLM integrations. Equity + KSUM incubation possible.",
-    meta: [
-      { label: "Role", value: "Builder" },
-      { label: "Stack", value: "React · AI" },
-      { label: "Commitment", value: "Part-time" },
+      "Design the next generation of the college IEDC chapter portal and social pitch deck. Paid gig for a student UI/UX developer with Figma and Next.js experience.",
+    projectTag: "Client Paid Gig",
+    badges: [
+      { label: "💰 Paid Gig", value: "Stipend Negotiable" },
+      { label: "Mentor", value: "College IEDC Cell" },
     ],
-    location: "Thrissur",
-    primaryAction: "contact",
+    skillTags: ["Figma", "Next.js"],
+    meta: [
+      { label: "Role", value: "UI/UX Developer" },
+      { label: "Work Mode", value: "Campus Hybrid" },
+      { label: "Stage", value: "MVP Ready" },
+    ],
+    primaryAction: "whatsapp",
+    actionUrl: createWhatsAppUrl("Client Paid Gig: IEDC Chapter UI Builder", ["Figma", "Next.js"]),
   },
   {
-    id: "bca-study-notes",
-    type: "Resource",
-    category: "resources",
-    title: "BCA First Year Exam Study Notes & Question Bank",
+    id: "iedc-incubated-agritech",
+    type: "Teamup",
+    category: "teamup",
+    title: "IEDC Incubated Project: AgriTech Marketplace MVP",
     description:
-      "Complete first-year BCA study notes covering C programming, digital fundamentals, and mathematics — plus a solved previous-year question bank. Free PDF.",
-    meta: [
-      { label: "Format", value: "PDF" },
-      { label: "Pages", value: "120+" },
-      { label: "Course", value: "BCA Sem 1" },
+      "Join a college incubated AgriTech product team building a buyer-seller marketplace for Kerala farmers. Looking for React and Node.js developers with product focus.",
+    projectTag: "IEDC Incubated Project",
+    badges: [
+      { label: "🏛️ IEDC Grant Funded", value: "Campus Product Team" },
+      { label: "Mentor", value: "College IEDC Cell" },
     ],
-    primaryAction: "download",
+    skillTags: ["React", "Node.js", "Python"],
+    meta: [
+      { label: "Role", value: "Full-stack Dev" },
+      { label: "Work Mode", value: "Campus Hybrid" },
+      { label: "Stage", value: "Concept Stage" },
+    ],
+    primaryAction: "whatsapp",
+    actionUrl: createWhatsAppUrl("IEDC Incubated Project: AgriTech Marketplace MVP", ["React", "Node.js", "Python"]),
+  },
+  {
+    id: "hackathon-teammate-iot",
+    type: "Teamup",
+    category: "teamup",
+    title: "Hackathon Teammate Request: IoT Campus Safety Device",
+    description:
+      "Need an IoT or Flutter teammate to build a safety alert device for a Kerala campus hackathon. Reward share plus mentorship from the IEDC cell.",
+    projectTag: "Hackathon Teammate Request",
+    badges: [
+      { label: "📜 Certificate", value: "KTU Activity Points" },
+      { label: "Mentor", value: "College IEDC Cell" },
+    ],
+    skillTags: ["IoT", "Flutter"],
+    meta: [
+      { label: "Role", value: "Hardware + App Dev" },
+      { label: "Work Mode", value: "Campus Hybrid" },
+      { label: "Stage", value: "Concept Stage" },
+    ],
+    primaryAction: "whatsapp",
+    actionUrl: createWhatsAppUrl("Hackathon Teammate Request: IoT Campus Safety Device", ["IoT", "Flutter"]),
   },
 ]
 
